@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+service PublishTopic {
+  rpc publishRequest (topicData) returns (acknowledge) {}
+
+  rpc subscribeRequest (topicSubscribe) returns (acknowledge) {}
+
+  rpc subscribeRequestCentral (topicDataType) returns (acknowledge) {}
+
+  rpc giveIps (topic) returns (stream ips) {}
+
+  rpc publish (topicData) returns (acknowledge) {}
+
+  rpc getFrontIp (empty) returns (ips) {}
+
+  rpc registerIp (ips) returns (acknowledge) {}
+
+  rpc sendBackupRequest (topicSubscribe) returns (acknowledge) {}
+
+  rpc sendBackup (stream topicData) returns (acknowledge) {}
+
+  rpc forwardBackup (stream topicData) returns (acknowledge) {}
+
+  rpc giveSubscriberIps (topicSubscribe) returns (stream ips) {}
+
+  rpc sendData (topicData) returns (acknowledge) {}
+
+  rpc replicaRequest (topicSubscribe) returns (acknowledge) {}
+
+  rpc querryTopics (empty) returns (stream topic) {}
+
+  rpc sendBackupRequestReplica (topicSubscribe) returns (acknowledge) {}
+
+  rpc sendBackupReplica (stream topicData) returns (acknowledge) {}
+
+  rpc unsubscribeRequest (stream topicSubscribe) returns (acknowledge) {}
+
+  rpc deReplicaRequest (topicSubscribe) returns (acknowledge) {}
+
+  rpc unsubscribeRequestCentral (topicSubscribe) returns (acknowledge) {}
+
+  rpc commit_request (commit_req_data) returns (acknowledge) {}
+
+  rpc commit_phase_two (commit_req_data) returns (acknowledge) {}
+
+  rpc upgradeBackup (empty) returns (acknowledge) {}
+
+  rpc giveDataPhaseOne (empty) returns (topic) {}
+
+  rpc giveDataPhaseTwo (empty) returns (acknowledge) {}
+
+  rpc getMasterIp (empty) returns (ips) {}
+
+  rpc getBackupIp (empty) returns (ips) {}
+}
+
+
+message topicData {
+  string topic = 1;
+  string data = 2;
+}
+
+message topicSubscribe {
+  string topic = 1;
+  string client_ip = 2;
+}
+
+message topicDataType {
+  string topic = 1;
+  string client_ip = 2;
+  string type = 3;
+}
+
+message topic {
+  string topic = 1;
+}
+
+message ips {
+  string ip = 1;
+}
+
+message acknowledge {
+  string ack = 1;
+}
+
+message empty {
+}
+
+message commit_req_data
+{
+    string action = 1;
+    string level = 2;
+    string data_1 = 3;
+    string data_2 = 4;
+    string data_3 = 5;
+    string filename=6;
+    string function_name = 7;
+}

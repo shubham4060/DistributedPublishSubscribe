@@ -1,0 +1,33 @@
+processes :
+client
+frontend server/topic server
+central server
+
+
+messages :
+new client :
+new_client : sent by client to central server, central server allots a new frontend server, replies with its address.
+new_client_frontend : client sends to frontend server after reply from central. (ack imp)
+
+publish
+publish msg : topic,data [client -> frontend]
+get_replicated_nodes : topic. Server replies with list of addresses. publish_msg1 to all replicated nodes.
+
+old subscriber :
+since it is push based, as soon as topic server gets data, it pings the central server for the subscibing frontend servers it has to forward to.
+find_subscribers_for_me : topic server pings central server to find the subscribing frontend servers, it then sends the events to frontend servers.
+data_to_subscribing_nodes : topic server sends data to subscribed frontend server.
+data_to_clients : the frontend server checks its table for the clients that have subscribed to the topics and forwards the data to them.
+
+
+new_subscribers : 
+client_subscribe_request : client sends subscribe request to the front-end server, if in the table, there is no client subscribed to the topic, the front end server and client is a new subscriber,
+		else, only client is new subscriber.
+the frontend server adds new client entry with new_client = 1
+
+
+new_client_old_frontend : the frontend server sends to central server, after which central server sends 
+send_old_data_to_frontend_server : to the topic server, after which topic server sends 
+old_data_to_subscribing_nodes : after which it sends completed msg to the frontend server. The frontend server sees old tag and forwards it to clients for which new_client = 1. After teh complete msg, it sets new_client = 0
+
+new_client_old_frontend : frontend sends the request for new topic to central server, after which central server adds entry to the two level table with new fronend server for the topic subscribed and sends old_data_to_subscribing_nodes to the topic server the frontend server is assigned to.
